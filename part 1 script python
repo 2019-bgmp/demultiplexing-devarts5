@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+# a script to run through a set of fastq files and calculate the quality score distribution at each nucleotide.
+import argparse
+import gzip
+
+def getargs():
+  parser = argparse.ArgumentParser(description = "file to parse")
+  parser.add_argument('-f', '--file', type= str, required = True, help= "enter one of the four files for this sequencing library")
+  return parser.parse_args()
+
+args = getargs()
+
+mean_scores = []
+for i in range(101):
+  mean_scores.append(0.0)
+
+file_in_use = args.file
+
+with gzip.open(file_in_use, 'rt') as f:
+    #print (f)
+    ln = 0
+    for line in f:
+        line = line.strip()
+        #print(line)
+        ln +=1
+        if ln % 4 == 0:
+            #print(line)
+            counter = 0
+            for i in line:
+                translated = ord(i)-33
+                mean_scores[counter] += translated
+                counter = counter + 1
+                print(mean_scores)
+
+    countess = 0
+    for thing in mean_scores:
+        mean_scores[countess] = mean_scores[countess]/(ln/4)
+        countess += 1
+
+print(mean_scores)
