@@ -30,11 +30,12 @@ with gzip.open(file_in_use, 'rt') as f:
                 translated = ord(i)-33
                 mean_scores[counter] += translated
                 counter = counter + 1
-                print(mean_scores)
+                #print(mean_scores)
 
     countess = 0
     for thing in mean_scores:
         mean_scores[countess] = mean_scores[countess]/(ln/4)
+        print(countess, mean_scores[countess], sep =" ")
         countess += 1
 
-print(mean_scores)
+#print(mean_scores)
