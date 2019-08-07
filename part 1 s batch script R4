@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --account=bgmp          ### SLURM account
+#SBATCH --partition=bgmp        ### Partition
+#SBATCH --job-name=demultiplexing_part1_R4      ### Job Name
+#SBATCH --output=slurm-%j-%x.out         ### output log
+#SBATCH --time=0-10:00:00       ### time estimate
+#SBATCH --nodes=1               ### Node count required (default)
+#SBATCH --ntasks-per-node=1     ### Number of tasks (default)
+#SBATCH --cpus-per-task=1       ### Number
+
+conda deactivate
+conda deactivate
+conda deactivate
+
+conda activate bgmp_py3
+
+./demultiplexing_part1.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz
