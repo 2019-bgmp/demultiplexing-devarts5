@@ -11,7 +11,7 @@
 
 *Part 1-2*
 
-a.)The histograms and the scripts used to obtain them are in separate files in this repository.
+a.)The histograms and the scripts used to obtain them are in separate files in this repository.  It's interesting to note that most of the low quality reads are indeed clusteres at the beginning of the read. (See Paired end read #1 -chart 2 excel file)  Also a bit over 80% of the paired end reads #1 have a quality score of 38.96 or better.
 
 b.) What constitutes a good quality score cut-off is entirely dependent on the needs and desires of the individual primary investigator.  Given that in other fields of biology, we often demand a standard error below 0.5%, I would be tempted to toss out any read with a quality score below 40, but retain those for the investigators and if they are used in any subsequent mapping, indicate what the lowest quality score used was and the percent of base pairs at quality score levels below 40.  I would maintain a quality score cut off that was 40 for indexes, as I'd like to be entirely sure that index hopping has not happened, that I am not using reads from other sources.
 
