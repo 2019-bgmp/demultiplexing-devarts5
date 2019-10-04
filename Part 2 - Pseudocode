@@ -93,7 +93,7 @@ low_quality_reads_index2.fasta
 I had no idea what a doc string might be.  Apparently a doc string is just a comment,
  set apart by triple tics (```        ```) , immediately after the def line that delineates what the function does.
  Earlier, I wrote this information in plain English, misunderstanding what a pseudocode might be.
-An example of a doc string:```
+These will be included in the rewritten Psuedocode. An example of a doc string:```
  ``` This function converts a single character into a phred score.  An “A” could go in and 32 would be returned```.
 
 ```o Function headers (name and parameters)
@@ -143,7 +143,7 @@ A8 AGGATAGC```
 1294_S1_L008_R4_001.fastq.gz
 in /projects/bgmp/shared/2017_sequencing/```
 
-``` The Tester Files
+``` The General Tester Files
 I have three tester files.  They were created by using cut commands and piping them to new files.
 Each two have five reads.
  tester_index.txt.gz
@@ -160,7 +160,7 @@ def indices(user entered)
 ```Create a dictionary with the 24 index identifiers and associated barcode sequences```
   Assign the dictionary to a variable named "indices"
 ``` indices can be called to check indices against the list```
-#Returns -  Dictionary objects
+#Returns -  Dictionary object Ex: {'B1':'GTAGCGTA','A5':'CGATCGAT', et cetera]
 Print the dictionary
 # Unit test - manually check the printed dictionary against the list of indices given to us.  Example GTAGCGTA should be paired with B1
 
@@ -174,12 +174,28 @@ def input_list_by_type(user entered)
  # identifying them as Index 1, Index 2, Read1 and Read2.  Manually check that they are identified as entered
     # Example flag Index1 associated with 1st index read
 
-#Function that associates each base with its' numbered position if the index barcodes.  This provides a list of lists.
-def index_barcode(Index list)
-#method to create index_barcode
-  Open Index 1
-  Set a counter
-  iterate through list setting each base in a dictionary with the next counter number
+def index_barcode(Indices)
+#method to create index barcode lists that can be checked by position in the index barcode
+  Open the indices dictionary
+  iterate through the dictionary elements one at a time
+  For each item, create a new list of the bases in the sequence value
+  Name each list with the barcode identifier and the sequence.  Ex: B1_GTAGCGTA_base_number
+#Returns a list object for each barcode, wherein each base is identified by it's position in the code. 
+	# Ex:  B1_GTAGCGTA_base_number = {'G':'1','T":'2','A':'3','G':'4','C':'5','G':'6','A':'7'}
+#Unit Test - Print each of the barcode lists and check the sequence order 
+
+def complement_list(index_barcode)
+#This function will find the complement to each given index bar code and add them to a dictionary matched to the 
+same number that their reverse is matched to in the index_barcode function. 
+
+Open the index bar-code lists.
+ for eah create a new list titled complement Set up a new dictionary matched pair list named “barcode_complements”.
+c.) For each barcode sequence, do the following.
+i.) Make a complementary code. 
+ii.) If the first letter in the index sequence is “C” it will be matched to a “G”.  A “G” will be matched to a “C”.  An “A” will be matched to a “T” and a “T” will be matched to an “A”. The resulting complementary code will be added to the dictionary with the index code as it’s key.
+d.) Add the complementary barcode with the number to which the original matching barcode is indexed in the index_barcode dictionary into the barcode_complements list.
+
+Unit Test – Using the same index tester.  Print the matching barcodes dictionary and the index_barcode dictionary. Check each barcode to see that it is matched to a unique number 1-24.  Check that the complement is matched to the same number.
 
 
 ```PRIOR PSUEDOCODE
