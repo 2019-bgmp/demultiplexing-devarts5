@@ -193,8 +193,45 @@ Open the index bar-code lists, one at a time in a loop, until all have been open
 	If it is a “G” enter a “C”.  If it's an “A” enter a “T” and if it's a “T” enter an “A”.
 # Return - a set of list objects titled, in example complement_CATCGCT.  That would be the complement list to B1_GTAGCGTA
 #Unit Test – Using the same barcode index list, for comparison, print the matching barcodes dictionary and the index_barcode dictionary.
-#Check each barcode to see that it is matched to a unique number 1-24.  Check that the complement is matched to the same number.
+#Check each barcode to see that the complement is correct and at the same spot in the list.  If The first position is an A in the index_barcode list,
+#the first position should be a T in the matching complement list.
 
+def convert_phred(one of the quality scores from the eight characters in the quality code line of an index)
+#Method to take each quality code character and, using the ord command, convert it it to a number, subtract the required amount 
+and have a numerical illumina quality code.
+#Method
+Loop through a read file.
+Using reg-ex commands extract the quality code.
+Apply (ord(letter)-33) # ord returns the unicode code for any given unicode character. 33 is subracted.
+#Return - A numerical quality level
+#Unit test:
+#   If 'A' is input, 32 should be returned
+
+def mean_quality_score(The convert phred score for the eight characters in the quality code line of an index)
+#Method to assign a mean quality score to a read
+# Method written in part1 of this part 1 demultiplexing assignment
+Return - A mean qulity score for the quality code line for an index)
+
+def index_pair_labeller(one idex read and one matching sequence read compare
+#Steps to Detect possible Index-swapping and undetermined reads and assign them to files
+#This can be thought of as one large function, though it doesn't need a def line/ header.
+def Index_swap_&_undtermined_read_Detector(first index file list and second index file)
+#Method -Steps to check the forward index list
+	Using the arg parse flags, open the file for the first read (forward read) set of indexes and the file for the second set of indices.
+	Iterate over the first index file list and the second index file 
+	Set a counter. 
+	Loop through the sequence for each index in each read, using a counter and a modulo to find the  
+      	barcode sequence line.
+#Method -Steps to check the second index list	
+	-Open the first and second sequence filesl.
+	-Check the second index list for that read using the counter and a modulo to find the  
+        barcode sequence line.
+	-Call the complement_list function.  
+	- Use the index_pair labeler function to relabel the reads.
+#Unit Test 
+	Run the 1294_S1_L008_R4 read tester file.  We should be able to see corrrectly labelled results 
+	Print the index bar code sequences from the master tester file and compare.
+	Print the results of the index_pair_labeller and check against master tester file for those with correct inidices
 
 ```PRIOR PSUEDOCODE
 
