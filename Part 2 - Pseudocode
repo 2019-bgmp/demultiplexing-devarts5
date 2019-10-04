@@ -34,7 +34,7 @@ two FASTQ files for each of 24 different index pairs, labelled with the index i.
 
 ```Determine high level functions
 
-```FINAL OUTPUT FILES
+```FINAL OUTPUT FILES  All will be .fasta.gz
 B1_GTAGCGTA_Read1.fasta
 A5_CGATCGAT_Read1.fasta
 C1_GATCAAGG_Read1.fasta
@@ -93,16 +93,15 @@ low_quality_reads_index2.fasta
 I had no idea what a doc string might be.  Apparently a doc string is just a comment,
  set apart by triple tics (```        ```) , immediately after the def line that delineates what the function does.
  Earlier, I wrote this information in plain English, misunderstanding what a pseudocode might be.
-These will be included in the rewritten Psuedocode. An example of a doc string:```
+These will be included within the rewritten Psuedocode. An example of a doc string:```
  ``` This function converts a single character into a phred score.  An “A” could go in and 32 would be returned```.
 
 ```o Function headers (name and parameters)
 Earlier, I did not know that function headers are pidgin Python/English def lines. I had though that these were just titles of functions,
-or headers in a colloquial sense.  These will be included in the rewritten Psuedocode```
+or headers in a colloquial sense.  These will be included within the rewritten Psuedocode```
 
  ```o Test examples for individual functions
-If I am correct, the pseudocode should specifically given an example of a test input and output for each function and
-step in pidgin code, rather than in English.```
+Now, more specifically delineated within the rewritten pseudo-code.```
 
  ``` Return statement
 If I now understand correctly, this is not met by stating in English what the function or step does.
@@ -186,16 +185,15 @@ def index_barcode(Indices)
 
 def complement_list(index_barcode)
 #This function will find the complement to each given index bar code and add them to a dictionary matched to the 
-same number that their reverse is matched to in the index_barcode function. 
-
-Open the index bar-code lists.
- for eah create a new list titled complement Set up a new dictionary matched pair list named “barcode_complements”.
-c.) For each barcode sequence, do the following.
-i.) Make a complementary code. 
-ii.) If the first letter in the index sequence is “C” it will be matched to a “G”.  A “G” will be matched to a “C”.  An “A” will be matched to a “T” and a “T” will be matched to an “A”. The resulting complementary code will be added to the dictionary with the index code as it’s key.
-d.) Add the complementary barcode with the number to which the original matching barcode is indexed in the index_barcode dictionary into the barcode_complements list.
-
-Unit Test – Using the same index tester.  Print the matching barcodes dictionary and the index_barcode dictionary. Check each barcode to see that it is matched to a unique number 1-24.  Check that the complement is matched to the same number.
+same number that their reverse is matched to in the index_barcode function." 
+#method
+Open the index bar-code lists, one at a time in a loop, until all have been opened and processed.
+	for each bar code sequence in the index_barcode create a new list titled complement_original sequence.
+	for each barcode base enter the opposite code into the list. If the first letter in the index sequence is “C” enter a “G”.
+	If it is a “G” enter a “C”.  If it's an “A” enter a “T” and if it's a “T” enter an “A”.
+# Return - a set of list objects titled, in example complement_CATCGCT.  That would be the complement list to B1_GTAGCGTA
+#Unit Test – Using the same barcode index list, for comparison, print the matching barcodes dictionary and the index_barcode dictionary.
+#Check each barcode to see that it is matched to a unique number 1-24.  Check that the complement is matched to the same number.
 
 
 ```PRIOR PSUEDOCODE
