@@ -1,3 +1,5 @@
+THIS IS STILL IN PROGRESS.  IF YOU CAN WAIT TO REVIEW, PLEASE DO!
+
 #David Evarts
 # Psuedocode and questions
 #Demultiplexing and Index Swapping Assignment – Part 2 of Part 1.  Due 8/11/19 – edited 10/19
@@ -18,7 +20,7 @@ Informative output is given in the assignment 48 FASTQ files that contain accept
 ```Write examples (unit tests!):
 o Include four properly formatted input FASTQ files with read pairs that cover all three categories
 (dual matched, index-hopped, unknown index)
-The basic Files
+The basic Files  NEED TO ADD TO REPO
 1294_S1_L008_R1_001.fastq.gz
 1294_S1_L008_R2_001.fastq.gz
 1294_S1_L008_R3_001.fastq.gz
@@ -90,9 +92,8 @@ low_quality_reads_index2.fasta
 ```
 
 ```Description/doc string – What does this function do?
-I had no idea what a doc string might be.  Apparently a doc string is just a comment,
- set apart by triple tics (```        ```) , immediately after the def line that delineates what the function does.
- Earlier, I wrote this information in plain English, misunderstanding what a pseudocode might be.
+  Apparently a doc string is just a comment, set apart by triple quotes ('''        ''') , immediately after the def line that 
+  delineates what the function does.Earlier, I wrote this information in plain English, misunderstanding what a pseudocode might be.
 These will be included within the rewritten Psuedocode. An example of a doc string:```
  ``` This function converts a single character into a phred score.  An “A” could go in and 32 would be returned```.
 
@@ -159,17 +160,17 @@ def indices(user entered)
 ```Create a dictionary with the 24 index identifiers and associated barcode sequences```
   Assign the dictionary to a variable named "indices"
 ``` indices can be called to check indices against the list```
-#Returns -  Dictionary object Ex: {'B1':'GTAGCGTA','A5':'CGATCGAT', et cetera]
+#Returns -  Dictionary object Ex: {'B1':'GTAGCGTA','A5':'CGATCGAT', et cetera}
 Print the dictionary
 # Unit test - manually check the printed dictionary against the list of indices given to us.  Example GTAGCGTA should be paired with B1
 
 def input_list_by_type(user entered)
 ```create an input list Using arg parse.```
-  ask the user to input four files for first and second reads from each end
-  Arg parse sets a flag for each file
-```allows referring to files by their input type from the list```
+#method
+	-ask the user to input four files for first and second reads from each end
+ 	-Arg parse sets a flag for each file #allows referring to files by their input type from the list.
 #Returns a list of four read types
- # Unit test - A series of four FASTQ file names, one of each type, followed by a print statement with arg parse flags
+# Unit test - A series of four FASTQ file names, one of each type, followed by a print statement with arg parse flags
  # identifying them as Index 1, Index 2, Read1 and Read2.  Manually check that they are identified as entered
     # Example flag Index1 associated with 1st index read
 
