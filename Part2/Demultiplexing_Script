@@ -1,0 +1,132 @@
+#!/usr/bin/env python
+
+```a script to run through a pair of fastq read files and a pair of index files, check quality scores and check indexes and
+assign reads to either one of 48 FASTQ files that contain acceptable index pairs (read1 and read2 for 24 different index pairs),
+one of two FASTQ files with index-hopped reads-pairs (read1 and read 2), or one of two undetermined FASTQ files
+(non-matching or low quality) index-pairs
+```
+
+import argparse
+import gzip
+
+def getargs():
+  parser = argparse.ArgumentParser(description = "file to parse")
+  parser.add_argument('-I1', '--Index1File', type= str, required = True, help= "Enter your first Index File")
+  parser.add_argument('-I2', '--Index2File', type= str, required = True, help= "Enter your second Index File")
+  parser.add_argument('-R1', '--Read1File', type= str, required = True, help= "Enter your first Read File")
+  parser.add_argument('-R2', '--Read2File', type= str, required = True, help= "Enter your second Index Read File")
+  parser.add_argument('-b','--barcode', type= str, required = True, help= "Please add your list of bar codes.  These should be in the format ["AGAGTCCA", "GGGCCAAT", "TCGATAAT", etc....]"
+  return parser.parse_args()
+
+args = getargs()
+
+#def get_args(): # Usage
+#       parser = argparse.ArgumentParser(description='Parse Fasta file for the longest protein sequence')
+#       parser.add_argument("-f", "--file", help = "This needs to be a FASTA file of sequences. Sequences must be contained on one line.", required = True)
+#       parser.add_argument("-c", "--column", help = "This is a gene and protein name information file", required = True)
+#       parser.add_argument("-o", "--outfile", help = "This is the name of the file the longest protein sequence records will be written out to", required = True)
+#       return parser.parse_args()
+args = get_args()
+Index_1 = args.Index1File # make variable user input Index1
+Index_2 = args.Index2File
+Read_1 = args.Read1File
+Read_2 = args.Read2File
+Bar_Codes = args.barcode
+
+```
+def_indices ()
+#creates a list of strings with the given index bar codes
+indices = []
+extend(argparse 1)
+# Test - print(indices),  should give as many bar codes as entered Return - list with barcodes entered
+
+def files_dict{}
+# creates an input dictionary via argparse of the four files entered by the user, paired with their type.
+files_dict = {}
+# Test -print(files_dict), should give a dictionary of four files, paired with their type
+
+def comp_indices()
+# creates a list of complements matching def_indices
+comp_indices = {}
+while string in def_indices list
+  for string in def_indices
+    if base in string == A add T to comp_indices string
+    if base in string == T add A to comp indices string
+    if base in string == C add G to comp indices string
+    if base in string == G add C to comp indices string
+# Return complementary code list. Test print(comp_indices) and print(indices). Are they complements?
+
+def(convert_phred)
+# converts a single character in quality code line to numerical quality code
+    with file open
+    numerical_quality_code = []
+     reg_ex for quality code make string
+     for letter in quality code string
+        ord(letter)-33 = integer_in_quality_code
+        extend new list by integer_in_quality_code
+#Returns a list of quality code for one read Test - print example.
+
+def mean_quality_score(The convert phred score for the eight characters in the quality code line of an index)
+#Method to assign a mean quality score to a read
+# Method written in part1 of this part 1 demultiplexing assignment
+Return - A mean qulity score for the quality code line for an index)
+
+def index_pair_labeller(one read and one matching sequence read compare
+#This function alters the header of a read to display the sequences of the indices associated with it
+#method
+	-Create another line counter.
+	-Use it and the modulo to identify the header line in the current Read.
+	-Edit the header line to start with “@”<the sequence for this read in
+	 the index file> and the sequence for this read in the <second index file,
+	 using reg-ex commands and a pipeline.
+
+
+#Unit Test - Using the short tester files, run the function.  Print the output files and compare labels to the functions.
+#Example: An example of an edited header for a sequence fie of a read with an index swap would be one in which the first
+#index read AGAGTCCA, but the second index read TCCTATCG, rather than TCTCAGGT.  In this case the header would labelled
+# “@AGAGTCCA- TCCTATCG”  If it were a correct dual matching index, the header would now read “@AGAGTCCA- TCTCAGGT”.
+#The rest of the information in the header would be unchanged.
+
+def Index_swap_&_undtermined_read_Detector(one index file and matching read file)
+#Steps to Detect possible Index-swapping and undetermined reads and assign them to files
+#This can be thought of as one large function, though it doesn't need a def line/ header.
+
+
+#Method -Steps to check the forward index list
+  Using the arg parse flags, open the file for the first read (forward read) set of indexes and the file for the second set of indices.
+  Iterate over the first index file list and the second index file
+  Set a counter.
+  Loop through the sequence for each index in each read, using a counter and a modulo to find the
+        barcode sequence line.
+#Method -Steps to check the second index list
+  -Open the first and second sequence filesl.
+  -Check the second index list for that read using the counter and a modulo to find the
+        barcode sequence line.
+  -Call the complement_list function.
+  - Use the index_pair labeler function to relabel the reads.
+  -Check the second index list to see if the second index for this read matches a complement_list entry.
+  -Check to see if the paired numerical value of the complementary sequence in the complement_list is the same as that
+   of the assigned index in the paired with the same number as the first index for this read in the index_barcode dictionary.
+  -Check the first index against the assigned_indices list. If the two indices do not match each other do the following.
+  -Check the second index list to see if the second index for this read matches a complement_list entry.
+    -Check to see if there is a file named with the first and second indices that are at this read and
+    the following “suspected_index_hop_first_reads.fastq.”
+      -If there is not such a file, create one.
+        -also create one named “suspected_index_hop_2nd_reads.fastq.”
+    -As you do use the index_pair_label function, involving reg-ex commands and a pipeline to alter
+     the header.
+    -Copy the second full sequence read into “suspected_index_hop_2nd_reads.fastq, while also using the
+     index_pair_label function.
+     -If there is not yet such files, create files named “undetermined 1st reads.fastq” and
+      “undetermined 2nd reads.fastq”
+      -f.)	If either index does not match anything in the assigned_indices (for 1st reads) or
+       complement_list (for second reads) move all four lines for the first read into the
+       “undetermined 1st reads” fastq file, using the index_pair_labeller to tag the header
+       as it is moved and second reads into the “undetermined 2nd reads” file, also using the
+       index_pair labeler.
+#Unit Test
+  -Run the 1294_S1_L008_R4 read tester file.  We should be able to see corrrectly labelled results
+  -Print the index bar code sequences from the master tester file and compare.
+  -Print the results of the index_pair_labeller and check against master tester file for those with correct inidices
+  -Check the second index list to see if the second index for this read matches a complement_list entry.
+```
