@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /usr/bin/bash
 #SBATCH --account=bgmp          ### SLURM account
 #SBATCH --partition=bgmp        ### Partition
 #SBATCH --job-name=DeMultipled      ### Job Name
@@ -14,4 +14,4 @@ conda deactivate
 
 conda activate bgmp_py3
 
-./Demultiplex_script.py -f /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz
+/usr/bin/time -v ./Demultiplex_script.py -R1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz -R2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz -I1 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz -I2 /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R4_001.fastq.gz -b ["GTAGCGTA","CGATCGAT","GATCAAGG", "AACAGCGA","TAGCCATG", "CGGTAATC","CTCTGGAT","TACCGGAT","CTAGCTCA","CACTTCAC","GCTACTCT","ACGATCCAG","TATGGCAC","TGTTCCGT","GTCCTAAG", "TCGACAAG","TCTTCGAC","ATCATGCG","ATCGTGGT","TCGAGAGT","TCGGATTC","GATCTTGC","AGAGTCCA","AGGATAGC"]
