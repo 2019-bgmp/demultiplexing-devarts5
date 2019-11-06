@@ -86,6 +86,7 @@ def comp_indices_dict(Indices):
 """
 #Unit test call function and print it.  Is  the reverse_indices a string of the reverse complements of the submitted Bar_Codes from arg?
 """
+
 def mean_phred(quality_line):
 	all_scores = []
 	all_scores.append(0.0)
@@ -130,20 +131,26 @@ Strategy for the big loop.
  12.) Do not Gzip Output i script, it will take too long to run. Gzip output in Talapas.
 """
 #########Big Loop#############
-
+#Create Files for matched read pairs
+d_read_1 = {} #Dictionary from which to create files for read pair types 1st bio read
+d_read_2 = {} #Dictionary from which to create files for read pair types 2nd bio read
+for barcode in Indices():
+	name = barcode + reverse_indices(barcode)
+	d [name]= open()
+	
 #Open all four input files
 with open(Index_1,"r") as index_1_fh, open(Index_2,"r") as index_2_fh, open(Read_1,"r") as read_1_fh, open(Read_2, "r") as read_2_fh:
 	#Create undetermined files and count dicts outside of coming loops
-	undet_read1_dict = {"low_quality_Index_1stBioRead":0}
-	undet_read2_dict = {"low_quality_Index_2ndBioRead":0}
-	index_hopped_read1_dict = {"index_hopped_B1":0}
-	index_hopped_read2_dict = {"index_hopped_B2":0}
-	undet_read1 = open("Undetermined_Read_1.fastq", 'w')
-	undet_read2 = open("Undetermined_Read_2.fastq", 'w')
-	index_hopped_B1 =open("Index_Hopped_Read_1.fastq", 'w')
-	index_hopped_B1 =open("Index_Hopped_Read_2.fastq", 'w')
-	good_Read1_count_dict = {}
-	good_Read2_count_dict = {}
+	undet_read1_dict = {"low_quality_Index_1stBioRead":0}#counter for low quality reads 1
+	undet_read2_dict = {"low_quality_Index_2ndBioRead":0}# counter for low quality reads 2
+	index_hopped_read1_dict = {"index_hopped_B1":0} # counter for index hopped reads 1
+	index_hopped_read2_dict = {"index_hopped_B2":0}#counter for index hopped reads 2
+	undet_read1 = open("Undetermined_Read_1.fastq", 'w') # file in which to place low quality reads and those with unknown bar codes - bio read #1
+	undet_read2 = open("Undetermined_Read_2.fastq", 'w') # file in which to place low quality reads and those with unknown bar codes - bio read #2
+	index_hopped_B1 =open("Index_Hopped_Read_1.fastq", 'w')# file in which to place index hopped reads - bio read #1
+	index_hopped_B2 =open("Index_Hopped_Read_2.fastq", 'w')# file in which to place index hopped reads - bio read #2
+	good_Read1_count_dict = {"Good_BioRead1":0}# counter for over all matched reads - BioRead1
+	good_Read2_count_dict = {"Good_BioRead2":0}# counter for over all matched reads - BioRead2
 
 #Open first four lines in each file, I1 = Index1, B1 = BioRead1, I2 - Index2, B2 = Bioread2. When done, open next four reads, until all parsed.
 	while True:
@@ -175,50 +182,115 @@ with open(Index_1,"r") as index_1_fh, open(Index_2,"r") as index_2_fh, open(Read
 		B2L3 = read_2_fh.readline().strip()
 		B2L4 = read_2_fh.readline().strip()
 
+		#Create Files for matched read pairs
+		d_read_1 = {} #Dictionary from which to create files for read pair types 1st bio read
+		d_read_2 = {} #Dictionary from which to create files for read pair types 2nd bio read
+		d_matched = {"pair_count":0}#initialize to use for counts of matched pairs
+		
+		for barcode in Indices():
+			name = barcode + reverse_indices(barcode)
+			matched_reads_R1[name]= open(I1L2 + "-" + reverse_indices(I2L2) + "R1.fastq", 'w')
+			matched_reads_R2[name]= open(I1L2 + "-" + reverse_indices(I2L2) + "R2.fastq", 'w')
+
 		# check for Ns, place reads with "N" in undetermined for Index1
-		if "N" in I1L2: # could I combine and use "or "N" in I2L2:"  This checks first index for Ns
-			new_name = I1L2 + "-"+ comp_indices(I2L2) + "Read1" #Get label
-			undet_read1_dict["low_quality_Index_1stBioRead"] += 1 #count low quality
-			undet_read1.write(B1L1 + new_name+"\n") #write header to file with new label
+		if "N" in I1L2 or "N" in I2L2: # could I combine and use "or "N" in I2L2:"  This checks first index for Ns
+			#print("I'm in if N in I1L2")
+			#print("I1L2 is ", I1L2)
+			new_name_r1 = I1L2 + "-"+ comp_indices(I2L2) + "Read1" #Get label for read 1
+			#print(new_name_r1)
+			new_name_r2 = I1L2 + "-"+ comp_indices(I2L2) + "Read2" #Get label for read 2
+			#print(new_name_r2)
+			undet_read1_dict["low_quality_Index_1stBioRead"] += 1 #count low quality read 1
+			undet_read2_dict["low_quality_Index_2ndBioRead"] += 1 #count low quality read 2
+			undet_read1.write(B1L1 + new_name_r1+"\n") #write header to file with new label
 			undet_read1.write(B1L2+"\n") #write sequence line to file +"\n" allows each line to be entered seperatly
 			undet_read1.write(B1L3+"\n") #Write + line
 			undet_read1.write(B1L4+"\n") # add quality line
-		elif "N" not in I1L2:# If no Ns in index, move to next question.
-			if mean_phred(I1L4) < 30: # If average of index quality scores is low
-				undet_read1_dict["low_quality_Index_1stBioRead"] += 1 #add to low quality count.  Should be counting 3 per direction.  It's only getting one.
-				undet_read1.write(B1L1+new_name +"\n") # place header in undetermined with new name.  The "\n" makes lines, prevents a run on.
-				undet_read1.write(B1L2+"\n") #move line two - sequence
-				undet_read1.write(B1L3+"\n") # move line 3 - + line
-				undet_read1.write(B1L4+"\n") # move line 4 quality line
-			else: #If no ns and mean quality not too low, label header, count, make file if first time that the index pair has been seen and/or place in file.
-				if I1L4 == comp_indices(I2L4): # Does Index one match reverse complement?
-						pass
+			undet_read2.write(B2L1+new_name +"\n") # place header in undetermined with new name.  The "\n" makes lines, prevents a run on.
+			undet_read2.write(B2L2+"\n") #move line two - sequence
+			undet_read2.write(B2L3+"\n") # move line 3 - + line
+			undet_read2.write(B2L4+"\n") # move line 4 quality line
+			# If no Ns in index, move to next question.
+
+		elif mean_phred(I1L4) < 30 or mean_phred(I2L4) < 30: # If average of index quality scores is low
+		#print("I'm in if N not in I1L2")# If no Ns in index, move to next question.
+			new_name_r1 = I1L2 + "-"+ comp_indices(I2L2) + "Read1" #Get label for read 1
+			#print(new_name_r1)
+			new_name_r2 = I1L2 + "-"+ comp_indices(I2L2) + "Read2" #Get label for read 2
+			#print(new_name_r2)
+			undet_read1_dict["low_quality_Index_1stBioRead"] += 1 #add to low quality count.
+			undet_read2_dict["low_quality_Index_2ndBioRead"] += 1 #count low quality read 2
+			undet_read1.write(B1L1+new_name_r1 +"\n") # place header in undetermined with new name.  The "\n" makes lines, prevents a run on.
+			undet_read1.write(B1L2+"\n") #move line two - sequence
+			undet_read1.write(B1L3+"\n") # move line 3 - + line
+			undet_read1.write(B1L4+"\n") # move line 4 quality line
+			undet_read2.write(B2L1+new_name +"\n") # place header in undetermined with new name.  The "\n" makes lines, prevents a run on.
+			undet_read2.write(B2L2+"\n") #move line two - sequence
+			undet_read2.write(B2L3+"\n") # move line 3 - + line
+			undet_read2.write(B2L4+"\n") # move line 4 quality lin
+			#Next condition.  Are the bar codes in indices or reverse_indices
+
+		elif I1L4 or I2L4 not in Indices or reverse_indices: # put unknown bar codes in undetermined file
+			undet_read1_dict["low_quality_Index_1stBioRead"] += 1 #add to low quality count.
+			undet_read2_dict["low_quality_Index_2ndBioRead"] += 1 #count low quality read 2
+			new_name_r1 = I1L2 + "-"+ comp_indices(I2L2) + "Read1" #Get label for read 1
+			#print(new_name_r1)
+			new_name_r2 = I1L2 + "-"+ comp_indices(I2L2) + "Read2" #Get label for read 2
+			#print(new_name_r2)
+			undet_read1.write(B1L1+new_name_r1 +"\n") # place header in undetermined with new name.  The "\n" makes lines, prevents a run on.
+			undet_read1.write(B1L2+"\n") #move line two - sequence
+			undet_read1.write(B1L3+"\n") # move line 3 - + line
+			undet_read1.write(B1L4+"\n") # move line 4 quality line
+			undet_read2.write(B2L1+new_name +"\n") # place header in undetermined with new name.  The "\n" makes lines, prevents a run on.
+			undet_read2.write(B2L2+"\n") #move line two - sequence
+			undet_read2.write(B2L3+"\n") # move line 3 - + line
+			undet_read2.write(B2L4+"\n") # move line 4 quality lin
+
+		# Does Index one match reverse complement?
+		elif I1L4 == comp_indices(I2L4):
+			new_name_r1 = I1L2 + "-"+ comp_indices(I2L2) + "Read1" #Get label for read 1
+			#print(new_name_r1)
+			new_name_r2 = I1L2 + "-"+ comp_indices(I2L2) + "Read2" #Get label for read 2
+			#print(new_name_r2)
+			good_Read1_count_dict["Good_BioRead1"] += 1
+			good_Read2_count_dict["Good_BioRead2"] += 1
+			d_matched{}
+			name = I1L4 + reverse_indices(I1L4)
+			matched_reads_R1[name].write(B1L1+ new_name_r1 +"\n")
+			matched_reads_R1[name].write(B1L2+"\n")
+			matched_reads_R1[name].write(B1L3+"\n")
+			matched_reads_R1[name].write(B1L4+"\n")
+			matched_reads_R2[name].write(B2L1+ new_name_r1 +"\n")
+			matched_reads_R1[name].write(B2L2+"\n")
+			matched_reads_R1[name].write(B2L3+"\n")
+			matched_reads_R1[name].write(B2L4+"\n")
+
+		#If both on list but not matching, they are index hopped.
+		else if I1L4 != comp_indices(I2L4):
+			name = I1L2 + comp_indices(I2L2)
+			new_name_r1 = I1L2 + "-"+ comp_indices(I2L2) + "Read1" #Get label for read 1
+			#print(new_name_r1)
+			new_name_r2 = I1L2 + "-"+ comp_indices(I2L2) + "Read2" #Get label for read 2
+			#print(new_name_r2)
+			index_hopped_read2_dict["index_hopped_B2"]+=1
+			index_hopped_read1_dict["index_hopped_B1"]+=1
+			index_hopped_B1.write(B1L1+ new_name_r1 +"\n")
+			index_hopped_B1.write(B1L2 +"\n")
+			index_hopped_B1.write(B1L3 +"\n")
+			index_hopped_B1.write(B1L4 +"\n")
+			index_hopped_B2.write(B2L1+ new_name_r2 +"\n")
+			index_hopped_B2.write(B2L2 +"\n")
+			index_hopped_B2.write(B2L3 +"\n")
+			index_hopped_B2.write(B2L4 +"\n")
+
+#Print counters
 print(undet_read1_dict)
-
-"""
-#new_name not in good_Read1_count_dict: #How to do this?
-#good_Read1_count_dict[new_name]=1 #make dictionary pair with paired index/reverse_complementary barcode and count
-#else:
-#open(new_name."fastq","w") #I am not sure how to get this file named with the forward and reverse
-#good_Read1_count_dict[new_name] += 1
-
-#Repeat all of the above for the second index file
-		if "N" in I2L2:
-			new_name = I1L2 + comp_indices(I2L2) + "Read1"
-			undet_read1_dict["low_quality_I1"] += 1
-			undet_read1.write(B2L1 + new_name+"\n")
-			undet_read1.write(B2L2+"\n")
-			undet_read1.write(B2L3+"\n")
-			undet_read1.write(B2L4+"\n")
-		elif "N" not in I2L2:
-			for character in I2L4:
-				if mean_phred(I2L4) < 30:
-  					undet_read1_dict["low_quality_I1"] += 1
-  					undet_read1.write(B2L1+new_name +"\n")
-  					undet_read1.write(B2L2+"\n")
-  					undet_read1.write(B2L3+"\n") #
-  					undet_read1.write(B2L4+"\n")
-				else:
-					if I2L4 == comp_indices(I1L4):
-						pass
-"""
+print(undet_read1_dict)
+print(d_matched)
+print(index_hopped_read1_dict) 
+print(index_hopped_read2_dict) 
+print(undet_read2)
+print(index_hopped_B1)
+print(index_hopped_B2)
+print(good_Read1_count_dict)
+print(good_Read2_count_dict)
