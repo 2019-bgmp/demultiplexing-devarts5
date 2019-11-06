@@ -1,0 +1,6 @@
+-I chose a cut off phred score of mean 30 applied to the indexes and also put any barcodes with an N in the Undetermined files.  My reasoning is that, as these are index files, we need to be relatively certain that they, at leat are correct.
+
+Percentage of reads from each sample
+Overall amount of index swapping
+
+Output files
